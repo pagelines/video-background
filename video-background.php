@@ -8,6 +8,7 @@ Author: Aleksander Hansson
 Author URI: http://ahansson.com
 PageLines: videobackground
 Tags: extension
+v3:true
 */
 
 define( 'AH_VIDEO_BACKGROUND_STORE_URL', 'http://shop.ahansson.com' );
