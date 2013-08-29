@@ -71,10 +71,10 @@ class VideoBackground extends PageLinesSection {
 			$vb_autoplay = 'true';
 		}
 
-		if ( $this->opt( 'vb_mute', $this->oset ) == 'n' || pl_draft_mode() ) {
-			$vb_mute = 'false';
-		} else {
+		if ( $this->opt( 'vb_mute', $this->oset ) == 'y' || pl_draft_mode() ) {
 			$vb_mute = 'true';
+		} else {
+			$vb_mute = 'false';
 		}
 
 		if ( $this->opt( 'vb_loop', $this->oset ) == 'n') {
