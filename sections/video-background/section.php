@@ -4,12 +4,11 @@
 	Author: Aleksander Hansson
 	Author URI: http://ahansson.com
 	Demo: http://videobackground.ahansson.com
-	Version: 1.2
 	Description: A section that makes it possible to have YouTube videos as background on a page-by-page basis. 7 customization options and pure awesomeness!
 	Class Name: VideoBackground
-	Workswith: templates, main
 	Cloning: false
 	v3: true
+	Filter: layout
 */
 
 class VideoBackground extends PageLinesSection {
