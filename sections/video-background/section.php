@@ -23,9 +23,9 @@ class VideoBackground extends PageLinesSection {
 
 	function section_head() {
 
-		$video_mp4 = ( $this->opt( 'vb_mp4', $this->oset ) ) ? $this->opt( 'vb_mp4', $this->oset ) : '';
+		$video_mp4 = ( $this->opt( 'vb_mp4' ) ) ? $this->opt( 'vb_mp4' ) : '';
 
-		if ( $this->opt( 'vb_loop', $this->oset ) == 'n') {
+		if ( $this->opt( 'vb_loop' ) == 'n') {
 			$loop_setting = 'false';
 		} else {
 			$loop_setting = 'true';
@@ -58,32 +58,32 @@ class VideoBackground extends PageLinesSection {
 
 	function section_template() {
 
-		$vb_youtube = ( $this->opt( 'vb_youtube', $this->oset ) ) ? $this->opt( 'vb_youtube', $this->oset ) : '';
+		$vb_youtube = ( $this->opt( 'vb_youtube' ) ) ? $this->opt( 'vb_youtube' ) : '';
 
-		$vb_startat = ( $this->opt( 'vb_startat', $this->oset ) ) ? $this->opt( 'vb_startat', $this->oset ) : '0';
+		$vb_startat = ( $this->opt( 'vb_startat' ) ) ? $this->opt( 'vb_startat' ) : '0';
 
-		$vb_opacity = ( $this->opt( 'vb_opacity', $this->oset ) ) ? $this->opt( 'vb_opacity', $this->oset ) : '1.0';
+		$vb_opacity = ( $this->opt( 'vb_opacity' ) ) ? $this->opt( 'vb_opacity' ) : '1.0';
 
 
-		if ( $this->opt( 'vb_autoplay', $this->oset ) == 'n') {
+		if ( $this->opt( 'vb_autoplay' ) == 'n') {
 			$vb_autoplay = 'false';
 		} else {
 			$vb_autoplay = 'true';
 		}
 
-		if ( $this->opt( 'vb_mute', $this->oset ) == 'y' || pl_draft_mode() ) {
+		if ( $this->opt( 'vb_mute' ) == 'y' || pl_draft_mode() ) {
 			$vb_mute = 'true';
 		} else {
 			$vb_mute = 'false';
 		}
 
-		if ( $this->opt( 'vb_loop', $this->oset ) == 'n') {
+		if ( $this->opt( 'vb_loop' ) == 'n') {
 			$vb_loop = 'false';
 		} else {
 			$vb_loop = 'true';
 		}
 
-		if ( $this->opt( 'vb_showcontrols', $this->oset ) == 'n' || pl_draft_mode() ) {
+		if ( $this->opt( 'vb_showcontrols' ) == 'n' || pl_draft_mode() ) {
 			$vb_showcontrols = 'false';
 		} else {
 			$vb_showcontrols = 'true';
@@ -92,115 +92,134 @@ class VideoBackground extends PageLinesSection {
 		if ($vb_youtube) {
 			printf('<a class="videobackground" data-property="{videoURL:\'%s\', autoPlay:%s, mute:%s, startAt:%s, opacity:%s, loop:%s, showControls:%s, showYTLogo:false, printUrl: false}"></a>', $vb_youtube, $vb_autoplay, $vb_mute, $vb_startat, $vb_opacity, $vb_loop, $vb_showcontrols ) ;
 		} else {
-			echo setup_section_notify($this, __('Please set up Video Background.', 'VideoBackground'));
+			echo setup_section_notify($this, __('Please set up Video Background.', 'video-background'));
 		}
 
 	}
 
+	function section_opts() {
 
-	function section_optionator( $settings ){
+		$options = array();
 
-		$settings = wp_parse_args($settings, $this->optionator_default);
+		$how_to_use = __( '
+		<strong>Read the instructions below before asking for additional help:</strong>
+		</br></br>
+		<strong>1.</strong> Copy the link of the YouTube video that you want as a background and paste it into link field.
+		</br></br>
+		<strong>2.</strong> Customize it by editing the other settings.
+		</br></br>
+		<strong>3.</strong> When you are done, hit "Publish" and refresh to see changes.
+		</br></br>
+		<div class="row zmb">
+				<div class="span6 tac zmb">
+					<a class="btn btn-info" href="http://forum.pagelines.com/71-products-by-aleksander-hansson/" target="_blank" style="padding:4px 0 4px;width:100%"><i class="icon-ambulance"></i>          Forum</a>
+				</div>
+				<div class="span6 tac zmb">
+					<a class="btn btn-info" href="http://betterdms.com" target="_blank" style="padding:4px 0 4px;width:100%"><i class="icon-align-justify"></i>          Better DMS</a>
+				</div>
+			</div>
+			<div class="row zmb" style="margin-top:4px;">
+				<div class="span12 tac zmb">
+					<a class="btn btn-success" href="http://shop.ahansson.com" target="_blank" style="padding:4px 0 4px;width:100%"><i class="icon-shopping-cart" ></i>          My Shop</a>
+				</div>
+			</div>
+		', 'split-slider' );
 
-		$options = array(
+		$options[] = array(
+			'key' => 'vb_help',
+			'type'     => 'template',
+			'template'      => do_shortcode( $how_to_use ),
+			'title' =>__( 'How to use:', 'video-background' ) ,
+		);
 
-			'vb_options' => array(
-				'type' => 'multi_option',
-				'title' => __('Video Background Options', 'VideoBackground'),
-				'shortexp' => __('Settings for Video Background goes here.', 'VideoBackground'),
-				'selectvalues' => array(
+		$options[] = array(
 
-					'vb_youtube'  => array(
-						'inputlabel'  => __( 'YouTube video link:', 'VideoBackground' ),
-						'title'   => __( 'YouTube Video Link', 'VideoBackground' ),
-						'type'   => 'text',
-						'shortexp'   => __( 'Link to the YouTube video you wish to use as background.', 'VideoBackground' )
-					),
+			'key'	=> 'vb_options',
+			'title' => __( 'Video Background Options', 'video-background' ),
+			'type'	=> 'multi',
+			'opts'	=> array(
+				array(
+					'key'	=>	'vb_youtube',
+					'label'  => __( 'YouTube video link:', 'video-background' ),
+					'type'   => 'text',
+					'help'   => __( 'Link to the YouTube video you wish to use as background.', 'video-background' )
+				),
 
-					'vb_startat'  => array(
-						'title'   => __( 'Start video at', 'VideoBackground' ),
-						'inputlabel'  => __( 'After how many seconds should the video start? (Default: 0)', 'VideoBackground' ),
-						'type'   => 'text',
-					),
+				array(
+					'key'	=>		'vb_startat',
+					'title'   => __( 'Start video at', 'video-background' ),
+					'label'  => __( 'After how many seconds should the video start? (Default: 0)', 'video-background' ),
+					'type'   => 'text',
+				),
 
-					'vb_showcontrols'  => array(
-						'title'   => __( 'Controls', 'VideoBackground' ),
-						'inputlabel' => __('Show Controls? (Default: Yes)', 'VideoBackground'),
-						'exp' => __('Controls is always hidden when editor is in draft mode', 'VideoBackground'),
-						'type' => 'select',
-						'selectvalues' => array(
-							'y'   => array( 'name' => __('Yes'	, 'VideoBackground' )),
-							'n'   => array( 'name' => __('No'	, 'VideoBackground' )),
-						)
-					),
+				array(
+					'key'	=>		'vb_showcontrols',
+					'label' => __('Show Controls? (Default: Yes)', 'video-background'),
+					'help' => __('Controls is always hidden when editor is in draft mode', 'video-background'),
+					'type' => 'select',
+					'default' => 'y',
+					'opts' => array(
+						'y'   => array( 'name' => __('Yes'	, 'video-background' )),
+						'n'   => array( 'name' => __('No'	, 'video-background' )),
+					)
+				),
 
-					'vb_autoplay'  => array(
-						'title'   => __( 'Autoplay', 'VideoBackground' ),
-						'inputlabel' => __('Autoplay video? (Default: Yes)', 'VideoBackground'),
-						'type' => 'select',
-						'selectvalues' => array(
-							'y'   => array( 'name' => __('Yes'	, 'VideoBackground' )),
-							'n'   => array( 'name' => __('No'	, 'VideoBackground' )),
-						)
-					),
+				array(
+					'key'	=>		'vb_autoplay',
+					'label' => __('Autoplay video? (Default: Yes)', 'video-background'),
+					'type' => 'select',
+					'default' => 'y',
+					'opts' => array(
+						'y'   => array( 'name' => __('Yes'	, 'video-background' )),
+						'n'   => array( 'name' => __('No'	, 'video-background' )),
+					)
+				),
 
-					'vb_mute'  => array(
-						'title'   => __( 'Mute', 'VideoBackground' ),
-						'inputlabel' => __('Mute video? (Default: Yes)', 'VideoBackground'),
-						'exp' => __('Videos is always muted when editor is in draft mode', 'VideoBackground'),
-						'type' => 'select',
-						'selectvalues' => array(
-							'y'   => array( 'name' => __('Yes'	, 'VideoBackground' )),
-							'n'   => array( 'name' => __('No'	, 'VideoBackground' )),
-						)
-					),
+				array(
+					'key'	=>	'vb_mute',
+					'label' => __('Mute video? (Default: Yes)', 'video-background'),
+					'help' => __('Videos is always muted when editor is in draft mode', 'video-background'),
+					'type' => 'select',
+					'default' => 'y',
+					'opts' => array(
+						'y'   => array( 'name' => __('Yes'	, 'video-background' )),
+						'n'   => array( 'name' => __('No'	, 'video-background' )),
+					)
+				),
 
-					'vb_loop'  => array(
-						'title'   => __( 'Loop', 'VideoBackground' ),
-						'inputlabel' => __('Loop video at end? (Default: Yes)', 'VideoBackground'),
-						'type' => 'select',
-						'selectvalues' => array(
-							'y'   => array( 'name' => __('Yes'	, 'VideoBackground' )),
-							'n'   => array( 'name' => __('No'	, 'VideoBackground' )),
-						)
-					),
+				array(
+					'key'	=>		'vb_loop',
+					'label' => __('Loop video at end? (Default: Yes)', 'video-background'),
+					'type' => 'select',
+					'default' => 'y',
+					'opts' => array(
+						'y'   => array( 'name' => __('Yes'	, 'video-background' )),
+						'n'   => array( 'name' => __('No'	, 'video-background' )),
+					)
+				),
 
-					'vb_opacity' =>  array(
-						'title'   => __( 'Opacity', 'VideoBackground' ),
-						'inputlabel' => __('Opacity? (Default: 1.0)', 'VideoBackground'),
-						'type'    =>  'select',
-						'selectvalues'     => array(
-							'.0' => array( 'name' => __( '0.0'	, 'VideoBackground' )),
-							'.1' => array( 'name' => __( '0.1'	, 'VideoBackground' )),
-							'.2' => array( 'name' => __( '0.2'	, 'VideoBackground' )),
-							'.3' => array( 'name' => __( '0.3'	, 'VideoBackground' )),
-							'.4' => array( 'name' => __( '0.4'	, 'VideoBackground' )),
-							'.5' => array( 'name' => __( '0.5'	, 'VideoBackground' )),
-							'.6' => array( 'name' => __( '0.6'	, 'VideoBackground' )),
-							'.7' => array( 'name' => __( '0.7'	, 'VideoBackground' )),
-							'.8' => array( 'name' => __( '0.8'	, 'VideoBackground' )),
-							'.9' => array( 'name' => __( '0.9'	, 'VideoBackground' )),
-							'1'	 => array( 'name' => __( '1.0'	, 'VideoBackground' ))
-						)
-					),
+				array(
+					'key'	=>		'vb_opacity',
+					'label' => __('Opacity? (Default: 1.0)', 'video-background'),
+					'type'    =>  'select',
+					'opts'     => array(
+						'.0' => array( 'name' => __( '0.0'	, 'video-background' )),
+						'.1' => array( 'name' => __( '0.1'	, 'video-background' )),
+						'.2' => array( 'name' => __( '0.2'	, 'video-background' )),
+						'.3' => array( 'name' => __( '0.3'	, 'video-background' )),
+						'.4' => array( 'name' => __( '0.4'	, 'video-background' )),
+						'.5' => array( 'name' => __( '0.5'	, 'video-background' )),
+						'.6' => array( 'name' => __( '0.6'	, 'video-background' )),
+						'.7' => array( 'name' => __( '0.7'	, 'video-background' )),
+						'.8' => array( 'name' => __( '0.8'	, 'video-background' )),
+						'.9' => array( 'name' => __( '0.9'	, 'video-background' )),
+						'1'	 => array( 'name' => __( '1.0'	, 'video-background' ))
+					)
 				),
 			),
-
 		);
 
-		$tab_settings = array(
-
-			'id'		=> 'vidobackground-options',
-			'name'		=> 'Video Background',
-			'icon'		=> $this->icon,
-			'clone_id'	=> $settings['clone_id'],
-			'active'	=> $settings['active']
-		);
-
-
-		register_metatab($tab_settings, $options, $this->class_name);
-
-
+		return $options;
 	}
 
 }
