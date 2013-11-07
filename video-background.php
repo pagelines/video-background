@@ -6,7 +6,6 @@ Description: A section that makes it possible to have YouTube videos as backgrou
 Version: 1.4
 Author: Aleksander Hansson
 Author URI: http://ahansson.com
-PageLines: true
 v3:true
 */
 
